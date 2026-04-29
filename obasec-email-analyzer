@@ -1,0 +1,29 @@
+function analyzeHeader(header) {
+  let findings = []
+
+  if (!header.includes("spf=pass")) {
+    findings.push("⚠ SPF validation failed")
+  }
+
+  if (!header.includes("dkim=pass")) {
+    findings.push("⚠ DKIM validation failed")
+  }
+
+  if (header.includes("reply-to")) {
+    findings.push("⚠ Reply-To header detected")
+  }
+
+  if (findings.length === 0) {
+    return "✅ Email authentication looks safer"
+  }
+
+  return findings.join("\n")
+}
+
+const sampleHeader = `
+spf=fail
+dkim=fail
+reply-to: fakebank@gmail.com
+`
+
+console.log(analyzeHeader(sampleHeader))
